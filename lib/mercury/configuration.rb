@@ -27,7 +27,7 @@ class Mercury::Configuration
 
   def self.load_from_hash options
     options.each do | message, urls | 
-      config[message.to_s] = urls.values
+      forward message, to: urls.values
     end
   end
 
