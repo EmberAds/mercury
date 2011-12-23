@@ -1,4 +1,4 @@
-require 'lib/mercury'
+require './lib/mercury'
 
 describe Mercury::Job do
   describe "when given a valid category" do
