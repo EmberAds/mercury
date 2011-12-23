@@ -1,0 +1,3 @@
+class Mercury::Configuration
+
+end
