@@ -54,7 +54,7 @@ class Mercury::Configuration
 
   def load_from_hash options
     @options = options
-    self.broadcaster = eval(options["broadcaster"]).new unless options["broadcaster"].nil?
+    self.broadcaster = options["broadcaster"].constantise.new unless options["broadcaster"].blank?
     endpoint_data = options["endpoints"]
     endpoint_data.each do | message, urls | 
       forward message, to: urls.values

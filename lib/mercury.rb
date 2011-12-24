@@ -25,6 +25,9 @@ class Mercury
   end
 end
 
+require 'string_extensions'
+require 'object_extensions'
+require 'nil_class_extensions'
 
 Dir['./lib/mercury/*.rb'].each do | file | 
   require file
