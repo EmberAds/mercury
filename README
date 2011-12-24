@@ -1,3 +1,13 @@
 Mercury: a simple broadcast messaging service
 
+The basic idea is a simple pub-sub system - when a message needs to be published, a list of subscribers are all notified a bit later.  To publish a message, you do an HTTP POST; for each type of message, it has a list of subscribers and these are all notified a bit later, again via an HTTP POST.  
+
+It consists of three pieces: 
+
+* a Sinatra app that takes HTTP POSTs and queues the given message for dispatch later (Mercury::Server)
+* a background worker that examines the queue and actually does the message dispatch (Mercury::Relay)
+* a broadcaster that provides an abstract framework for queueing and dispatching messages
+
+By default, the system uses the Mercury::FileSystemBroadcaster to queue messages - these, as the name suggests, simply writes incoming messages to the filesystem and then the relay reads them back and the files are removed.  However, the FileSystemBroadcaster isn't concurrency-safe.  So if you're looking for more than one relay process, you probably want to use the Mercury::ResqueBroadcaster or Mercury::DelayedJobBroadcaster which use queueing mechanisms you're probably already familiar with.  
+
 This software is (c) 2011 EmberAds Ltd but available under the MIT licence (which I will add a reference to when I get time - but for now it's almost Christmas so you'll have to look it up yourself).  

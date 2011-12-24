@@ -1,7 +1,7 @@
 class Mercury::Server < Sinatra::Base
   Mercury.configuration.load_from 'config/mercury.yml'
 
-  get '/:queue' do | queue | 
+  post '/:queue' do | queue | 
     logger.info "Message received ... #{queue}: #{params.inspect}"
     Mercury.configuration.broadcaster.queue queue, params
     logger.info '... queued'
