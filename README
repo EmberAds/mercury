@@ -1,3 +1,30 @@
 Mercury: a simple broadcast messaging service
+=============================================
 
-This software is (c) 2011 EmberAds Ltd but available under the MIT licence (which I will add a reference to when I get time - but for now it's almost Christmas so you'll have to look it up yourself).  
+What does it do?
+----------------
+
+It listens for HTTP POSTs.  When it receives one, it then checks the incoming URI, loads up the appropriate configuration, and then forwards the POST to each URL listed within the configuration.  
+
+But, why?
+---------
+
+Because at EmberAds we needed a way of broadcasting messages between our various (Ruby-based) services.  A sort of Observer pattern (if you're a design pattern fan) but across various services around our network and beyond.  
+
+We could have used one of the many Ruby queues (Delayed::Job, Beanstalk, Resque) but none of them seemed to fit into our exact use-case (they generally implement Command pattern - do X at some point in the future, not do X to Y for multiple values of Y, at some point in the future).
+
+We could have used an off-the-shelf message queue (ActiveMQ, RabbitMQ) but they are way more complex than we need - mainly because we made an explicit decision not to require guaranteed delivery of the messages (meaning that we don't need persistence or high-availability).  
+
+So we wrote our own.
+
+How does it work?
+-----------------
+
+It's all built on top of Ruby's EventMachine.  There's a Mercury::Server that listens for incoming messages.  When it receives a message, it builds a Mercury::Responder, which decides who needs to hear this message.  For each recipient, a Mercury::Dispatcher is created to pass the message along.  
+
+As it's built upon EventMachine, if the service starts to get overloaded, it should just queue work for processing later.  However, as it does not do persistence, if the daemon dies for some reason, any queued messages will be lost.  If that's a problem for you, then this isn't the queue you want.  As we said above, that was an explicit design goal to keep things simple - I'm sure at some point we'll probably need to move on to something more robust, but today's not that day.  
+
+So who built this and can I use it?
+-----------------------------------
+
+This software is (c) 2012 EmberAds Ltd but is available under the MIT licence - please see the LICENCE file which should be included with this file.  

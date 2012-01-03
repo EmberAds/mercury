@@ -1,3 +1,0 @@
-class Mercury::Job
-
-end

@@ -1,8 +1,11 @@
 source 'http://rubygems.org'
 
+gem 'eventmachine'
+gem 'em-http-request'
+gem 'thin'
 gem 'sinatra'
-gem 'resque'
 
 group :test do
   gem 'rspec'
+  gem 'rack-test'
 end
