@@ -25,4 +25,9 @@ describe 'Mercury Server' do
     last_response.should be_ok
   end
 
+  it "should reload the server configuration" do
+    Mercury.configuration.should_receive(:load_from).with('./config/mercury.yml')
+    post '/reload_configuration'
+  end
+
 end
