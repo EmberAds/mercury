@@ -3,6 +3,10 @@ module Mercury::Delayed
     Proxy.new(self)
   end
 
+  def self.included base
+    base.extend self
+  end
+
   class Proxy
     def initialize target
       @target = target

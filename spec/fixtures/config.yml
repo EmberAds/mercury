@@ -1,5 +1,6 @@
-my_message:
-  1: http://this.com
-  2: http://that.com
-another_message:
-  1: http://theother.com
+endpoints: 
+  my_message:
+    1: http://this.com
+    2: http://that.com
+  another_message:
+    1: http://theother.com

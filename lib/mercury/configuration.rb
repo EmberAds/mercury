@@ -1,13 +1,25 @@
+=begin rdoc
+The configuration defines which messages should be POSTed to which URLs.  
+It allows these messages to be defined individually, from a Hash or loaded from a YAML file.   
+=end
+
 class Mercury::Configuration
-  def self.forward message, options
-    config[message.to_s] = options[:to]
+
+  # Set up the destinations for an individual message
+  # USAGE:
+  #     @configuration.forward 'my_message', to: ['http://here.com/endpoint', 'http://there.com/endpoint']
+  def forward message, options
+    endpoints[message.to_s] = options[:to]
   end
 
-  def self.urls_for message
-    config[message.to_s]
+  # Which URLs are defined for the given message?
+  def urls_for message
+    endpoints[message.to_s]
   end
 
-  def self.load_from options
+  # Load the options from a Hash or a file
+  # If a string is passed in then that is assumed to be the filename of a YAML file that will be loaded
+  def load_from options
     if options.is_a? String
       load_from_file options
     else
@@ -15,23 +27,30 @@ class Mercury::Configuration
     end
   end
 
-  def self.reset
-    @@config = {}
+  # Access any aribtrary data stored within the system
+  def [] key
+    options[key]
   end
 
   protected
 
-  def self.config
-    @@config ||= {}
+  def endpoints
+    options["endpoints"] ||= {}
   end
 
-  def self.load_from_hash options
-    options.each do | message, urls | 
+  def options
+    @options ||= {}
+  end
+
+  def load_from_hash options
+    @options = options
+    endpoint_data = options["endpoints"]
+    endpoint_data.each do | message, urls | 
       forward message, to: urls.values
-    end
+    end unless endpoint_data.nil?
   end
 
-  def self.load_from_file filename
+  def load_from_file filename
     require 'yaml'
     load_from_hash YAML::load(File.open(filename))
   end

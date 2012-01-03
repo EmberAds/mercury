@@ -17,14 +17,14 @@ describe Mercury::Responder do
   describe "finding the destination URLs for a message" do
     it "should return an array of URLs if there is a configuration" do
       @urls = ['http://here.com', 'http://there.com']
-      Mercury::Configuration.should_receive(:urls_for).with('my_message').and_return(@urls)
+      Mercury.configuration.should_receive(:urls_for).with('my_message').and_return(@urls)
 
       @responder = Mercury::Responder.new 'my_message'
       @responder.destination_urls.should == @urls
     end
 
     it "should return an empty array if there are no configuration" do
-      Mercury::Configuration.should_receive(:urls_for).with('my_message').and_return(nil)
+      Mercury.configuration.should_receive(:urls_for).with('my_message').and_return(nil)
 
       @responder = Mercury::Responder.new 'my_message'
       @responder.destination_urls.should == []

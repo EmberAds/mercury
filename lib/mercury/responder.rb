@@ -1,4 +1,5 @@
 class Mercury::Responder
+  include Mercury::Delayed
   attr_reader :message
 
   def dispatch parameters
@@ -10,7 +11,7 @@ class Mercury::Responder
   end
 
   def destination_urls
-    urls = Mercury::Configuration.urls_for @message
+    urls = Mercury.configuration.urls_for @message
     urls.nil? ? [] : urls
   end
 
@@ -21,10 +22,6 @@ class Mercury::Responder
   def self.respond_to message, parameters
     responder = self.new message
     responder.dispatch parameters
-  end
-
-  def self.delay
-    Mercury::Responder
   end
 
 end

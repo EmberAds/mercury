@@ -1,0 +1,7 @@
+endpoints:
+  first_message:
+    1: http://example.com/somewhere
+    2: http://example.com/somewhere_else
+  second_message:
+    1: http://this.com/something
+    2: http://that.com/something
