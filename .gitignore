@@ -1,5 +1,6 @@
-# Ignore bundler config
+# Ignore system config
 /.bundle
+/.gitignore
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
