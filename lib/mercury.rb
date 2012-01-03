@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler'
+require 'logger'
 
 Bundler.require
 
@@ -15,6 +16,11 @@ class Mercury
   def self.configuration= configuration_instance
     @@configuration = configuration_instance
   end
+
+  def self.logger
+    @@logger ||= Logger.new('./log/mercury.log', 'daily')
+  end
+
 end
 
 Dir['./lib/mercury/*.rb'].each do | file | 

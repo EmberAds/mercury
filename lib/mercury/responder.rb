@@ -11,8 +11,9 @@ class Mercury::Responder
   end
 
   def destination_urls
-    urls = Mercury.configuration.urls_for @message
-    urls.nil? ? [] : urls
+    urls = Mercury.configuration.urls_for(@message) || []
+    Mercury.logger.info "......#{urls.size} URLs found"
+    return urls
   end
 
   def dispatchers
